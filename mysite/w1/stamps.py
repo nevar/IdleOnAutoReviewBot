@@ -93,13 +93,9 @@ def getCapacityAdviceGroup() -> AdviceGroup:
     #     label="Lab Jewel: Pure Opal Navette (lol jk, this is bugged)",
     #     picture_class="pure-opal-navette",
     # ))
-    capacity_Advices['Stamps'].append(Advice(
-        label=f"{{{{ Pristine Charm|#sneaking }}}}: Liqorice Rolle: "
-              f"{'1.25' if session_data.account.sneaking['PristineCharms']['Liqorice Rolle']['Obtained'] else '1'}/1.25x",
-        picture_class=session_data.account.sneaking['PristineCharms']['Liqorice Rolle']['Image'],
-        progression=int(session_data.account.sneaking['PristineCharms']['Liqorice Rolle']['Obtained']),
-        goal=1
-    ))
+    capacity_Advices['Stamps'].append(
+        session_data.account.sneaking_.pristine['Liqorice Rolle'].get_obtained_advice()
+    )
     for cap_stamp in ITEM_DATA.get_capacity_stamps():
         capacity_Advices['Stamps'].append(session_data.account.stamps[cap_stamp.name].get_advice(link_to_section=False))
 
@@ -276,7 +272,6 @@ def getExaltedAdviceGroup() -> AdviceGroup:
     compass = session_data.account.compass
     gemshop = session_data.account.gemshop['Purchases']
     atom_collider = session_data.account.atom_collider
-    pc = session_data.account.sneaking['PristineCharms']
 
     exalted_advice[boni].append(Advice(
         label=f"Total Exalted Bonus: {session_data.account.exalted_stamp_multi:.2f}x",
@@ -297,12 +292,9 @@ def getExaltedAdviceGroup() -> AdviceGroup:
         goal=session_data.account.atom_collider['Atoms']['Aluminium - Stamp Supercharger']['MaxLevel'],
         resource='particles'
     ))
-    exalted_advice[boni].append(Advice(
-        label=f"{{{{Pristine Charm|#sneaking}}}}: Jellypick: +{20 * pc['Jellypick']['Obtained']}/20%",
-        picture_class='jellypick',
-        progression=int(pc['Jellypick']['Obtained']),
-        goal=1
-    ))
+    exalted_advice[boni].append(
+        session_data.account.sneaking_.pristine['Jellypick'].get_obtained_advice()
+    )
     emp_set = session_data.account.armor_sets['Sets']['EMPEROR SET']
     exalted_advice[boni].append(Advice(
         label=f"{{{{Armor Set|#armor-sets}}}}: Emperor Set: {emp_set['Description']}",

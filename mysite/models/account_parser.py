@@ -3511,34 +3511,14 @@ def _parse_w6(account):
 
 def _parse_w6_sneaking(account):
     account.sneaking = {
-        "PristineCharms": {},
         "Gemstones": {},
         "JadeEmporium": {},
-        'CurrentMastery': safer_get(account.raw_optlacc_dict, 231, 0),
-        'MaxMastery': safer_get(account.raw_optlacc_dict, 232, 0),
     }
     raw_ninja_list = safe_loads(account.raw_data.get("Ninja", []))
     if not raw_ninja_list:
         logger.warning(f"Sneaking data not present{', as expected' if account.version < 200 else ''}.")
-    _parse_w6_pristine_charms(account, raw_ninja_list)
     _parse_w6_gemstones(account)
     _parse_w6_jade_emporium(account, raw_ninja_list)
-
-def _parse_w6_pristine_charms(account, raw_ninja_list):
-    raw_pristine_charms_list = raw_ninja_list[107] if raw_ninja_list else []
-    for index, (pristine_charm_name, pristine_charm_data) in enumerate(pristine_charms_dict.items()):
-        try:
-            account.sneaking["PristineCharms"][pristine_charm_name] = {
-                'Obtained': bool(raw_pristine_charms_list[index]),
-                'Image': pristine_charm_data['Image'],
-                'Bonus': pristine_charm_data['Bonus'],
-            }
-        except:
-            account.sneaking["PristineCharms"][pristine_charm_name] = {
-                'Obtained': False,
-                'Image': pristine_charm_data['Image'],
-                'Bonus': pristine_charm_data['Bonus'],
-            }
 
 def _parse_w6_gemstones(account):
     for gemstone_name, gemstone_values in sneaking_gemstones_dict.items():

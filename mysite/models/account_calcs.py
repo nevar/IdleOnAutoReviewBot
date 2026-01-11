@@ -171,7 +171,7 @@ def _calculate_w6_summoning_winner_bonuses(account):
 # Multi Group A: Pristine Charm - Crystal Comb
     # * (1 + m._customBlock_Ninja("PristineBon", 8, 0) / 100)
     max_mga = 1.3
-    player_mga = ValueToMulti(30 * account.sneaking['PristineCharms']['Crystal Comb']['Obtained'])
+    player_mga = ValueToMulti(account.sneaking_.pristine['Crystal Comb'].value)
 
 # Multi Group B: Gem Shop - King of all Winners
     # * (1 + 10 * c.asNumber(a.engine.getGameAttribute("GemItemsPurchased")[11]) / 100)
@@ -568,7 +568,7 @@ def _calculate_master_classes_grimoire_bone_sources(account):
     )
 
     account.grimoire['Bone Calc'] = {
-        'mga': ValueToMulti(30 if account.sneaking['PristineCharms']['Glimmerchain']['Obtained'] else 0),
+        'mga': ValueToMulti(account.sneaking_.pristine['Glimmerchain'].value),
         'mgb': ValueToMulti(grimoire_percent),
         'mgc': ValueToMulti(100 * account.caverns['Caverns']['Gambit']['Bonuses'][12]['Unlocked']),
         'mgd': ValueToMulti((25 * min(1, account.all_assets.get('EquipmentHats112').amount))),
@@ -631,7 +631,7 @@ def _calculate_master_classes_compass_dust_sources(account):
             + (account.compass['Upgrades']['Solardust Hoarding']['Total Value'] * safer_math_log(account.compass['Dust3'], 'Lava'))
         ),
         'mgb': account.compass['Upgrades']['Spire of Dust']['Total Value'],
-        'mgc': ValueToMulti(30 if account.sneaking['PristineCharms']['Twinkle Taffy']['Obtained'] else 0),
+        'mgc': ValueToMulti(account.sneaking_.pristine['Twinkle Taffy'].value),
         'mgd': ValueToMulti(
             (25 * min(1, account.all_assets.get('EquipmentHats118').amount))
         ),
@@ -717,7 +717,7 @@ def _calculate_master_classes_tesseract_tachyon_sources(account):
             account.emperor["Arcane Cultist Extra Tachyons"].value
             + account.alchemy_bubbles['Tachyon Bubble']['BaseValue']
         ),
-        'mgc': 1 + 0.3 * account.sneaking['PristineCharms']['Mystery Fizz']['Obtained'],
+        'mgc': ValueToMulti(account.sneaking_.pristine['Mystery Fizz'].value),
         'mgd': ValueToMulti(backup_energy_bonus_value),
         'mge': 1 + 0.2 * account.gemshop['Bundles']['bun_x']['Owned'],
         'mgf': ValueToMulti(account.alchemy_vials["Paper Pint (Chapter Three 'This is Gospel')"]['Value']),
@@ -858,7 +858,7 @@ def _calculate_w1_stamps(account):
             account.atom_collider['Atoms']['Aluminium - Stamp Supercharger']['Level']
             * account.atom_collider['Atoms']['Aluminium - Stamp Supercharger']['Value per Level']
         )
-        + (20 * account.sneaking['PristineCharms']['Jellypick']['Obtained'])
+        + account.sneaking_.pristine['Jellypick'].value
         + account.compass['Upgrades']['Abomination Slayer XVII']['Total Value']
         + MultiToValue(account.armor_sets['Sets']['EMPEROR SET']['Total Value'])
         + (20 * account.event_points_shop['Bonuses']['Extra Exaltedness']['Owned'])
@@ -873,7 +873,7 @@ def _calculate_w1_stamps(account):
             account.stamps[stamp_name].total_value = (
                 stamp.value
                 * (2 if account.labBonuses['Certified Stamp Book']['Enabled'] and stamp.stamp_type != 'Misc' else 1)
-                * (1.25 if account.sneaking['PristineCharms']['Liqorice Rolle']['Obtained'] and stamp.stamp_type != 'Misc' else 1)
+                * (ValueToMulti(account.sneaking_.pristine['Liqorice Rolle'].value) if stamp.stamp_type != 'Misc' else 1)
                 * (account.exalted_stamp_multi if stamp.exalted else 1)
             )
         except:
@@ -2187,7 +2187,7 @@ def _calculate_w6_farming_og(account):
         + account.farming['LandRankDatabase']['Overgrowth Megaboost']['Value']
         + account.farming['LandRankDatabase']['Overgrowth Superboost']['Value']
     ))
-    account.farming['OG']['Pristine Multi'] = ValueToMulti(50 * account.sneaking['PristineCharms']['Taffy Disc']['Obtained'])
+    account.farming['OG']['Pristine Multi'] = ValueToMulti(account.sneaking_.pristine['Taffy Disc'].value)
     account.farming['OG']['Total Multi'] = (
             account.farming['OG']['Ach Multi']
             * account.farming['OG']['SS Multi']
@@ -2292,11 +2292,11 @@ def _calculate_general_character_bonus_talent_levels(account):
             'Goal': 1
         },
         'Sneaking Mastery': {
-            'Value': 5 if account.sneaking['MaxMastery'] >= 3 else 0,
+            'Value': 5 if account.sneaking_.unlocked_mastery >= 3 else 0,
             'Image': 'sneaking-mastery',
             'Label': f"{{{{ Rift|#rift }}}}: Sneaking Mastery: "
-                     f"+{5 if account.sneaking['MaxMastery'] >= 3 else 0}/5 (Mastery III)",
-            'Progression': account.sneaking['MaxMastery'],
+                     f"+{5 if account.sneaking_.unlocked_mastery >= 3 else 0}/5 (Mastery III)",
+            'Progression': account.sneaking_.unlocked_mastery,
             'Goal': 3
         },
         'Grimoire': {

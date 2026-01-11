@@ -8,6 +8,7 @@ from models.advice.advice import Advice
 from models.w1.stamps import Stamps
 from models.w6.emperor import Emperor
 from models.w6.beanstalk import Beanstalk
+from models.w6.sneaking import Sneaking
 from utils.safer_data_handling import safe_loads, safer_get
 from utils.text_formatting import InputType
 from flask import g
@@ -73,6 +74,7 @@ class Account:
             'Upgrades': {}
         }
         # W6
+        self.sneaking_: Sneaking = Sneaking(self.raw_data)
         self.beanstalk: Beanstalk = Beanstalk(self.raw_data)
         self.emperor: Emperor = Emperor(self.raw_data)
         #W7

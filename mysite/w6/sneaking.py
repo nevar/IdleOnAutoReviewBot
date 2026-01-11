@@ -14,7 +14,10 @@ def getSneakingProgressionTiersAdviceGroups():
     sneaking_AdviceDict = {
         'Gemstones': [],
         'JadeEmporium': [],
-        'PristineCharms': []
+        "PristineCharms": [
+            pristine.get_obtained_advice(False)
+            for pristine in session_data.account.sneaking_.pristine.values()
+        ],
     }
     sneaking_AdviceGroups = {}
 
@@ -63,15 +66,6 @@ def getSneakingProgressionTiersAdviceGroups():
             label=purchaseName,
             picture_class=purchaseName,
             progression=int(purchaseDict['Obtained']),
-            goal=1
-        ))
-
-    # Assess Pristine Charms
-    for pristineCharmName, pristineCharmDict in session_data.account.sneaking["PristineCharms"].items():
-        sneaking_AdviceDict['PristineCharms'].append(Advice(
-            label=f"{pristineCharmName}: {pristineCharmDict['Bonus']}",
-            picture_class=f"{pristineCharmDict['Image']}",
-            progression=int(pristineCharmDict['Obtained']),
             goal=1
         ))
 
