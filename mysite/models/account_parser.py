@@ -3512,13 +3512,11 @@ def _parse_w6(account):
 def _parse_w6_sneaking(account):
     account.sneaking = {
         "Gemstones": {},
-        "JadeEmporium": {},
     }
     raw_ninja_list = safe_loads(account.raw_data.get("Ninja", []))
     if not raw_ninja_list:
         logger.warning(f"Sneaking data not present{', as expected' if account.version < 200 else ''}.")
     _parse_w6_gemstones(account)
-    _parse_w6_jade_emporium(account, raw_ninja_list)
 
 def _parse_w6_gemstones(account):
     for gemstone_name, gemstone_values in sneaking_gemstones_dict.items():
@@ -3535,22 +3533,6 @@ def _parse_w6_gemstones(account):
             gemstone_name,
             account.sneaking['Gemstones'][gemstone_name]['BaseValue']
         )
-
-def _parse_w6_jade_emporium(account, raw_ninja_list):
-    try:
-        raw_emporium_purchases = list(raw_ninja_list[102][9])
-    except:
-        raw_emporium_purchases = [""]
-    for index in jade_emporium_order:
-        try:
-            upgrade = jade_emporium[index]
-            account.sneaking['JadeEmporium'][upgrade['Name']] = {
-                'Obtained': upgrade['CodeString'] in raw_emporium_purchases,
-                'Bonus': upgrade['Bonus'],
-                'Image': upgrade['Name']
-            }
-        except:
-            continue
 
 
 def _parse_w6_farming(account):
@@ -3639,7 +3621,7 @@ def _parse_w6_farming_crop_depot(account):
             'Image': bonusDetails['Image'],
             'ScalingType': bonusDetails['funcType'],
             'ScalingNumber': bonusDetails['x1'],
-            'Unlocked': account.sneaking['JadeEmporium'][bonusDetails['EmporiumUnlockName']]['Obtained'],
+            'Unlocked': account.sneaking_.emporium[bonusDetails['EmporiumUnlockName']].obtained,
             'BaseValue': lava_func(
                 bonusDetails['funcType'],
                 account.farming['CropsUnlocked'] if bonusIndex != 7 else max(0, account.farming['CropsUnlocked'] - 100),

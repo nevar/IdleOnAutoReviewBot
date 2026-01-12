@@ -713,13 +713,9 @@ def getBeanMultiAdviceGroup(farming) -> AdviceGroup:
         goal=f"{farming['MarketUpgrades']['More Beenz']['MaxLevel']:.0f}",
     ))
     #Emporium - Deal Sweetening
-    bm_advices[mgb].append(Advice(
-        label=f"{{{{ Jade Emporium|#sneaking }}}}: Deal Sweetening: "
-              f"+{25 * session_data.account.sneaking['JadeEmporium']['Deal Sweetening']['Obtained']}/25%",
-        picture_class='deal-sweetening',
-        progression=int(session_data.account.sneaking['JadeEmporium']['Deal Sweetening']['Obtained']),
-        goal=1
-    ))
+    bm_advices[mgb].append(
+        session_data.account.sneaking_.emporium['Deal Sweetening'].get_advice()
+    )
     #Achievement - Crop Flooding
     bm_advices[mgb].append(Advice(
         label=f"W6 Achievement: Crop Flooding: "
@@ -1160,7 +1156,7 @@ def getFarmingAdviceSection():
         farming_AdviceGroupDict['Value'] = getCropValueAdviceGroup(farming)
     if farming['Mama Trolls Unlocked']:
         farming_AdviceGroupDict['Bean'] = getBeanMultiAdviceGroup(farming)
-    if session_data.account.sneaking['JadeEmporium']['Crop Depot Scientist']['Obtained']:
+    if session_data.account.sneaking_.emporium['Crop Depot Scientist'].obtained:
         farming_AdviceGroupDict['Depot'] = getCropDepotAdviceGroup(farming)
     farming_AdviceGroupDict['Day'] = getDayMarketAdviceGroup(farming)
     farming_AdviceGroupDict['Night'] = getNightMarketAdviceGroup(farming)

@@ -13,7 +13,10 @@ logger = get_logger(__name__)
 def getSneakingProgressionTiersAdviceGroups():
     sneaking_AdviceDict = {
         'Gemstones': [],
-        'JadeEmporium': [],
+        'JadeEmporium': [
+            emporium.get_advice(False)
+            for emporium in session_data.account.sneaking_.emporium.values()
+        ],
         "PristineCharms": [
             pristine.get_obtained_advice(False)
             for pristine in session_data.account.sneaking_.pristine.values()
@@ -58,15 +61,6 @@ def getSneakingProgressionTiersAdviceGroups():
             progression=f"{gemstoneData.get('Percent', 0):.2f}",
             goal=100,  # if session_data.account.sneaking["Gemstones"]['Moissanite']['Level'] == 0 or gemstoneName == 'Moissanite' else 400,
             unit="%"
-        ))
-
-    # Assess Jade Emporium
-    for purchaseName, purchaseDict in session_data.account.sneaking["JadeEmporium"].items():
-        sneaking_AdviceDict['JadeEmporium'].append(Advice(
-            label=purchaseName,
-            picture_class=purchaseName,
-            progression=int(purchaseDict['Obtained']),
-            goal=1
         ))
 
     for category in sneaking_AdviceDict:

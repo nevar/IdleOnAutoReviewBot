@@ -75,12 +75,9 @@ def getCapacityAdviceGroup() -> AdviceGroup:
     totalStarsignValue = starsignBase * session_data.account.star_sign_extras['SilkrodeNanoMulti'] * session_data.account.star_sign_extras['SeraphMulti']
 
     # Stamps
-    capacity_Advices['Stamps'].append(Advice(
-        label="{{ Jade Emporium|#sneaking }}: Level Exemption",
-        picture_class="level-exemption",
-        progression=1 if session_data.account.sneaking['JadeEmporium']['Level Exemption']['Obtained'] else 0,
-        goal=1
-    ))
+    capacity_Advices['Stamps'].append(
+        session_data.account.sneaking_.emporium['Level Exemption'].get_advice()
+    )
     capacity_Advices['Stamps'].append(Advice(
         label=f"Lab: Certified Stamp Book: "
               f"{max(1, 2 * session_data.account.labBonuses['Certified Stamp Book']['Enabled'])}/2x",
@@ -230,12 +227,9 @@ def getCostReductionAdviceGroup() -> AdviceGroup:
         progression=session_data.account.alchemy_p2w['Sigils']['Envelope Pile']['PrechargeLevel'],
         goal=max_sigil_level
     ))
-    costReduction_Advices['Uncapped'].append(Advice(
-        label="{{ Jade Emporium|#sneaking }}: Ionized Sigils",
-        picture_class='ionized-sigils',
-        progression=int(session_data.account.sneaking['JadeEmporium']['Ionized Sigils']['Obtained']),
-        goal=1
-    ))
+    costReduction_Advices['Uncapped'].append(
+        session_data.account.sneaking_.emporium['Ionized Sigils'].get_advice()
+    )
     costReduction_Advices['Uncapped'].append(Advice(
         label=f"{{{{ Artifact|#sailing }}}}: Chilled Yarn increases sigil by {1 + session_data.account.sailing['Artifacts']['Chilled Yarn']['Level']}x",
         picture_class='chilled-yarn',

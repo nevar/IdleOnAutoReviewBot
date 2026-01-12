@@ -154,9 +154,7 @@ def _calculate_w3_armor_sets(account):
 
 def _calculate_w6_emperor(account):
     # Dependency: _calculate_master_classes_tesseract_upgrades, sneaking, _calculate_w2_arcade, gemshop
-    account.emperor.calculate_max_attempt(
-        account.gemshop, account.sneaking['JadeEmporium']
-    )
+    account.emperor.calculate_max_attempt(account.gemshop, account.sneaking_.emporium)
     account.emperor.calculate_bonus_multi(account.arcade, account.tesseract)
     account.emperor.calculate_bonuses()
 
@@ -982,7 +980,7 @@ def _calculate_w2_cauldrons(account):
 def _calculate_w2_sigils(account):
     for sigilName in account.alchemy_p2w["Sigils"]:
         if account.alchemy_p2w["Sigils"][sigilName]["Level"] == 2:
-            if account.sneaking['JadeEmporium']['Ionized Sigils']['Obtained']:
+            if account.sneaking_.emporium['Ionized Sigils'].obtained:
                 # If you have purchased Ionized Sigils, the numbers needed to Gold get subtracted from your hours already
                 red_Hours = account.alchemy_p2w["Sigils"][sigilName]["Requirements"][2]
             else:
@@ -1226,7 +1224,7 @@ def _calculate_w4_cooking_max_plate_levels(account):
                 1
             ))
     if causticolumn_level < 4:
-        if account.sneaking['JadeEmporium']["Sovereign Artifacts"]['Obtained']:
+        if account.sneaking_.emporium["Sovereign Artifacts"].obtained:
             account.cooking['PlayerMissingPlateUpgrades'].append((
                 "{{ Artifact|#sailing }}: Sovereign Causticolumn",
                 "causticolumn",
@@ -1241,7 +1239,7 @@ def _calculate_w4_cooking_max_plate_levels(account):
                 1
             ))
     # Jade Emporium Increases
-    if account.sneaking['JadeEmporium']["Papa Blob's Quality Guarantee"]['Obtained']:
+    if account.sneaking_.emporium["Papa Blob's Quality Guarantee"].obtained:
         account.cooking['PlayerMaxPlateLvl'] += 10
     else:
         account.cooking['PlayerMissingPlateUpgrades'].append((
@@ -1250,7 +1248,7 @@ def _calculate_w4_cooking_max_plate_levels(account):
             0,
             1
         ))
-    if account.sneaking['JadeEmporium']["Chef Geustloaf's Cutting Edge Philosophy"]['Obtained']:
+    if account.sneaking_.emporium["Chef Geustloaf's Cutting Edge Philosophy"].obtained:
         account.cooking['PlayerMaxPlateLvl'] += 10
     else:
         account.cooking['PlayerMissingPlateUpgrades'].append((
@@ -2165,7 +2163,7 @@ def _calculate_w6_farming_bean_bonus(account):
     account.farming['Bean'] = {}
     account.farming['Bean']['mga'] = ValueToMulti(account.farming['MarketUpgrades']['More Beenz']['Value'])
     account.farming['Bean']['mgb'] = ValueToMulti(
-        (25 * account.sneaking['JadeEmporium']['Deal Sweetening']['Obtained'])
+        account.sneaking_.emporium['Deal Sweetening'].value
         + (5 * account.achievements['Crop Flooding']['Complete'])
     )
     account.farming['Bean']['Total Multi'] = account.farming['Bean']['mga'] * account.farming['Bean']['mgb']
@@ -2536,7 +2534,7 @@ def _calculate_w1_statues(account):
 
 def _calculate_w6_beanstalk(account):
     # Dependency: Emporium
-    emporium = account.sneaking["JadeEmporium"]
+    emporium = account.sneaking_.emporium
     account.beanstalk.calculate_unlocked_tier(emporium)
     account.beanstalk.calculate_golden_food_multi()
     account.beanstalk.calculate_bonuses()
