@@ -22,8 +22,7 @@ from consts.consts_w3 import arbitrary_shrine_goal, arbitrary_shrine_note, build
 from consts.consts_w4 import tomepct, max_meal_count, max_meal_level, max_nblb_bubbles, max_cooking_ribbon
 from consts.consts_w5 import max_sailing_artifact_level, divinity_offerings_dict, divinity_DivCostAfter3, \
     filter_recipes, filter_never, filter_only_after_gstack
-from consts.consts_w6 import max_farming_value, getGemstoneBoostedValue, \
-    summoning_rewards_that_dont_multiply_base_value
+from consts.consts_w6 import max_farming_value, summoning_rewards_that_dont_multiply_base_value
 from consts.progression_tiers import owl_bonuses_of_orion
 from models.advice.advice import Advice
 from models.advice.generators.general import get_upgrade_vault_advice
@@ -154,7 +153,7 @@ def _calculate_w3_armor_sets(account):
 
 def _calculate_w6_emperor(account):
     # Dependency: _calculate_master_classes_tesseract_upgrades, sneaking, _calculate_w2_arcade, gemshop
-    account.emperor.calculate_max_attempt(account.gemshop, account.sneaking_.emporium)
+    account.emperor.calculate_max_attempt(account.gemshop, account.sneaking.emporium)
     account.emperor.calculate_bonus_multi(account.arcade, account.tesseract)
     account.emperor.calculate_bonuses()
 
@@ -169,7 +168,7 @@ def _calculate_w6_summoning_winner_bonuses(account):
 # Multi Group A: Pristine Charm - Crystal Comb
     # * (1 + m._customBlock_Ninja("PristineBon", 8, 0) / 100)
     max_mga = 1.3
-    player_mga = ValueToMulti(account.sneaking_.pristine['Crystal Comb'].value)
+    player_mga = ValueToMulti(account.sneaking.pristine['Crystal Comb'].value)
 
 # Multi Group B: Gem Shop - King of all Winners
     # * (1 + 10 * c.asNumber(a.engine.getGameAttribute("GemItemsPurchased")[11]) / 100)
@@ -566,7 +565,7 @@ def _calculate_master_classes_grimoire_bone_sources(account):
     )
 
     account.grimoire['Bone Calc'] = {
-        'mga': ValueToMulti(account.sneaking_.pristine['Glimmerchain'].value),
+        'mga': ValueToMulti(account.sneaking.pristine['Glimmerchain'].value),
         'mgb': ValueToMulti(grimoire_percent),
         'mgc': ValueToMulti(100 * account.caverns['Caverns']['Gambit']['Bonuses'][12]['Unlocked']),
         'mgd': ValueToMulti((25 * min(1, account.all_assets.get('EquipmentHats112').amount))),
@@ -629,7 +628,7 @@ def _calculate_master_classes_compass_dust_sources(account):
             + (account.compass['Upgrades']['Solardust Hoarding']['Total Value'] * safer_math_log(account.compass['Dust3'], 'Lava'))
         ),
         'mgb': account.compass['Upgrades']['Spire of Dust']['Total Value'],
-        'mgc': ValueToMulti(account.sneaking_.pristine['Twinkle Taffy'].value),
+        'mgc': ValueToMulti(account.sneaking.pristine['Twinkle Taffy'].value),
         'mgd': ValueToMulti(
             (25 * min(1, account.all_assets.get('EquipmentHats118').amount))
         ),
@@ -715,7 +714,7 @@ def _calculate_master_classes_tesseract_tachyon_sources(account):
             account.emperor["Arcane Cultist Extra Tachyons"].value
             + account.alchemy_bubbles['Tachyon Bubble']['BaseValue']
         ),
-        'mgc': ValueToMulti(account.sneaking_.pristine['Mystery Fizz'].value),
+        'mgc': ValueToMulti(account.sneaking.pristine['Mystery Fizz'].value),
         'mgd': ValueToMulti(backup_energy_bonus_value),
         'mge': 1 + 0.2 * account.gemshop['Bundles']['bun_x']['Owned'],
         'mgf': ValueToMulti(account.alchemy_vials["Paper Pint (Chapter Three 'This is Gospel')"]['Value']),
@@ -856,7 +855,7 @@ def _calculate_w1_stamps(account):
             account.atom_collider['Atoms']['Aluminium - Stamp Supercharger']['Level']
             * account.atom_collider['Atoms']['Aluminium - Stamp Supercharger']['Value per Level']
         )
-        + account.sneaking_.pristine['Jellypick'].value
+        + account.sneaking.pristine['Jellypick'].value
         + account.compass['Upgrades']['Abomination Slayer XVII']['Total Value']
         + MultiToValue(account.armor_sets['Sets']['EMPEROR SET']['Total Value'])
         + (20 * account.event_points_shop['Bonuses']['Extra Exaltedness']['Owned'])
@@ -871,7 +870,7 @@ def _calculate_w1_stamps(account):
             account.stamps[stamp_name].total_value = (
                 stamp.value
                 * (2 if account.labBonuses['Certified Stamp Book']['Enabled'] and stamp.stamp_type != 'Misc' else 1)
-                * (ValueToMulti(account.sneaking_.pristine['Liqorice Rolle'].value) if stamp.stamp_type != 'Misc' else 1)
+                * (ValueToMulti(account.sneaking.pristine['Liqorice Rolle'].value) if stamp.stamp_type != 'Misc' else 1)
                 * (account.exalted_stamp_multi if stamp.exalted else 1)
             )
         except:
@@ -980,7 +979,7 @@ def _calculate_w2_cauldrons(account):
 def _calculate_w2_sigils(account):
     for sigilName in account.alchemy_p2w["Sigils"]:
         if account.alchemy_p2w["Sigils"][sigilName]["Level"] == 2:
-            if account.sneaking_.emporium['Ionized Sigils'].obtained:
+            if account.sneaking.emporium['Ionized Sigils'].obtained:
                 # If you have purchased Ionized Sigils, the numbers needed to Gold get subtracted from your hours already
                 red_Hours = account.alchemy_p2w["Sigils"][sigilName]["Requirements"][2]
             else:
@@ -1224,7 +1223,7 @@ def _calculate_w4_cooking_max_plate_levels(account):
                 1
             ))
     if causticolumn_level < 4:
-        if account.sneaking_.emporium["Sovereign Artifacts"].obtained:
+        if account.sneaking.emporium["Sovereign Artifacts"].obtained:
             account.cooking['PlayerMissingPlateUpgrades'].append((
                 "{{ Artifact|#sailing }}: Sovereign Causticolumn",
                 "causticolumn",
@@ -1239,7 +1238,7 @@ def _calculate_w4_cooking_max_plate_levels(account):
                 1
             ))
     # Jade Emporium Increases
-    if account.sneaking_.emporium["Papa Blob's Quality Guarantee"].obtained:
+    if account.sneaking.emporium["Papa Blob's Quality Guarantee"].obtained:
         account.cooking['PlayerMaxPlateLvl'] += 10
     else:
         account.cooking['PlayerMissingPlateUpgrades'].append((
@@ -1248,7 +1247,7 @@ def _calculate_w4_cooking_max_plate_levels(account):
             0,
             1
         ))
-    if account.sneaking_.emporium["Chef Geustloaf's Cutting Edge Philosophy"].obtained:
+    if account.sneaking.emporium["Chef Geustloaf's Cutting Edge Philosophy"].obtained:
         account.cooking['PlayerMaxPlateLvl'] += 10
     else:
         account.cooking['PlayerMissingPlateUpgrades'].append((
@@ -1923,23 +1922,15 @@ def _calculate_w6(account):
     # _calculate_w6_farming(account)  # Runs in wave3 due to Land Rank multi from Talents
     _calculate_w6_summoning(account)
 
+
 def _calculate_w6_sneaking_gemstones(account):
-    #Runs under wave3 since it relies on talent levels
-    account.sneaking['Highest Current Generational Gemstones'] = max([
-        (char.total_bonus_talent_levels if char.current_preset_talents.get("432", 0) > 0 else 0) + char.current_preset_talents.get("432", 0)
-        for char in account.all_characters if 'Wind Walker' in char.all_classes],
-        default=0
+    # TODO: Move to Talent class and calculate as Talent.as_multi
+    generational_gemstones_level = account.get_current_max_talent("Generational Gemstones")
+    gemstone_multi = lava_func("decayMulti", max(0, generational_gemstones_level), 3, 300)
+    account.sneaking.calculate_gemstone_value(
+        generational_gemstones_level, gemstone_multi
     )
-    for gemstone_name in account.sneaking['Gemstones']:
-        if gemstone_name != 'Moissanite':
-            try:
-                account.sneaking['Gemstones'][gemstone_name]['BoostedValue'] = getGemstoneBoostedValue(
-                    account.sneaking['Gemstones'][gemstone_name]['BaseValue'],
-                    account.sneaking['Gemstones']['Moissanite']['BaseValue'],
-                    account.sneaking['Highest Current Generational Gemstones']
-                )
-            except:
-                account.sneaking['Gemstones'][gemstone_name]['BoostedValue'] = account.sneaking['Gemstones'][gemstone_name]['BaseValue']
+
 
 def _calculate_w6_farming(account):
     # Runs in wave3 due to Land Rank multi from Talents
@@ -2163,7 +2154,7 @@ def _calculate_w6_farming_bean_bonus(account):
     account.farming['Bean'] = {}
     account.farming['Bean']['mga'] = ValueToMulti(account.farming['MarketUpgrades']['More Beenz']['Value'])
     account.farming['Bean']['mgb'] = ValueToMulti(
-        account.sneaking_.emporium['Deal Sweetening'].value
+        account.sneaking.emporium['Deal Sweetening'].value
         + (5 * account.achievements['Crop Flooding']['Complete'])
     )
     account.farming['Bean']['Total Multi'] = account.farming['Bean']['mga'] * account.farming['Bean']['mgb']
@@ -2185,7 +2176,7 @@ def _calculate_w6_farming_og(account):
         + account.farming['LandRankDatabase']['Overgrowth Megaboost']['Value']
         + account.farming['LandRankDatabase']['Overgrowth Superboost']['Value']
     ))
-    account.farming['OG']['Pristine Multi'] = ValueToMulti(account.sneaking_.pristine['Taffy Disc'].value)
+    account.farming['OG']['Pristine Multi'] = ValueToMulti(account.sneaking.pristine['Taffy Disc'].value)
     account.farming['OG']['Total Multi'] = (
             account.farming['OG']['Ach Multi']
             * account.farming['OG']['SS Multi']
@@ -2290,11 +2281,11 @@ def _calculate_general_character_bonus_talent_levels(account):
             'Goal': 1
         },
         'Sneaking Mastery': {
-            'Value': 5 if account.sneaking_.unlocked_mastery >= 3 else 0,
+            'Value': 5 if account.sneaking.unlocked_mastery >= 3 else 0,
             'Image': 'sneaking-mastery',
             'Label': f"{{{{ Rift|#rift }}}}: Sneaking Mastery: "
-                     f"+{5 if account.sneaking_.unlocked_mastery >= 3 else 0}/5 (Mastery III)",
-            'Progression': account.sneaking_.unlocked_mastery,
+                     f"+{5 if account.sneaking.unlocked_mastery >= 3 else 0}/5 (Mastery III)",
+            'Progression': account.sneaking.unlocked_mastery,
             'Goal': 3
         },
         'Grimoire': {
@@ -2534,7 +2525,7 @@ def _calculate_w1_statues(account):
 
 def _calculate_w6_beanstalk(account):
     # Dependency: Emporium
-    emporium = account.sneaking_.emporium
+    emporium = account.sneaking.emporium
     account.beanstalk.calculate_unlocked_tier(emporium)
     account.beanstalk.calculate_golden_food_multi()
     account.beanstalk.calculate_bonuses()

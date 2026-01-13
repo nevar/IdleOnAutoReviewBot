@@ -138,7 +138,7 @@ def getCompassCurrenciesAdviceGroup(compass):
 
     mgc_label = f"Dust Multi Group C: {compass['Dust Calc']['mgc']:.2f}x"
     currency_advices[mgc_label] = [
-        session_data.account.sneaking_.pristine['Twinkle Taffy'].get_obtained_advice()
+        session_data.account.sneaking.pristine['Twinkle Taffy'].get_obtained_advice()
     ]
 
     mgd_label = f"Dust Multi Group D: {compass['Dust Calc']['mgd']:.2f}x"

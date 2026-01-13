@@ -42,7 +42,7 @@ for item in NjEQ_items:
     NjEQ_items_dict[key] = values
 
 pristine_charms_info = {}
-sneaking_gemstones_dict = {}
+gemstones_info = {}
 gem_index = 0
 for key, data in NjEQ_items_dict.items():
     if "NjTrP" in key:
@@ -54,8 +54,8 @@ for key, data in NjEQ_items_dict.items():
         }
     if "NjGem" in key:
         _, _, name, base_value, _, scaling_value = data
-        sneaking_gemstones_dict[name] = {
-            "Stat": (
+        gemstones_info[name] = {
+            "Description": (
                 RANDOlist[102][gem_index]
                 .replace("_", " ")
                 .replace("@ ", "")
@@ -67,8 +67,6 @@ for key, data in NjEQ_items_dict.items():
             ),
             "Base Value": parse_number(base_value, 0),
             "Scaling Value": parse_number(scaling_value, 0),
-            "Max Value": parse_number(base_value + scaling_value, 0),
-            "Gem Index": gem_index,
             "OptlAcc Index": 233 + gem_index,
         }
         gem_index += 1

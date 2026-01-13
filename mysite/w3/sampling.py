@@ -105,7 +105,7 @@ def getPrinterSampleRateAdviceGroup() -> AdviceGroup:
         goal=1
     ))
     psr_Advices[account_subgroup].append(
-        session_data.account.sneaking_.pristine['Liqorice Rolle'].get_obtained_advice()
+        session_data.account.sneaking.pristine['Liqorice Rolle'].get_obtained_advice()
     )
     psr_Advices[account_subgroup].append(get_arcade_advice(5))
     psr_Advices[account_subgroup].append(Advice(
@@ -273,7 +273,7 @@ def getPrinterOutputAdviceGroup() -> AdviceGroup:
     pow10_kills = math.log(orb_kills,10) if orb_kills > 0 else 0
     kotr_multi = max(1, ValueToMulti(talent_value * pow10_kills))
 
-    lolly_flower = session_data.account.sneaking_.pristine['Lolly Flower']
+    lolly_flower = session_data.account.sneaking.pristine['Lolly Flower']
     charm_multi_active = ValueToMulti(lolly_flower.value)
 
     ballot_active = session_data.account.ballot['CurrentBuff'] == 11

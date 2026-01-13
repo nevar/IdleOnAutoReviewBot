@@ -148,7 +148,7 @@ def getBonusesMultiAdviceGroup() -> AdviceGroup:
 
     # Multi Group A: Pristine Charm - Crystal Comb
     multi_advices[mga].append(
-        account.sneaking_.pristine['Crystal Comb'].get_obtained_advice()
+        account.sneaking.pristine['Crystal Comb'].get_obtained_advice()
     )
 
     # Multi Group B: Gem Shop - King of all Winners

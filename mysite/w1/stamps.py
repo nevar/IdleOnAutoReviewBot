@@ -76,7 +76,7 @@ def getCapacityAdviceGroup() -> AdviceGroup:
 
     # Stamps
     capacity_Advices['Stamps'].append(
-        session_data.account.sneaking_.emporium['Level Exemption'].get_advice()
+        session_data.account.sneaking.emporium['Level Exemption'].get_advice()
     )
     capacity_Advices['Stamps'].append(Advice(
         label=f"Lab: Certified Stamp Book: "
@@ -91,7 +91,7 @@ def getCapacityAdviceGroup() -> AdviceGroup:
     #     picture_class="pure-opal-navette",
     # ))
     capacity_Advices['Stamps'].append(
-        session_data.account.sneaking_.pristine['Liqorice Rolle'].get_obtained_advice()
+        session_data.account.sneaking.pristine['Liqorice Rolle'].get_obtained_advice()
     )
     for cap_stamp in ITEM_DATA.get_capacity_stamps():
         capacity_Advices['Stamps'].append(session_data.account.stamps[cap_stamp.name].get_advice(link_to_section=False))
@@ -228,7 +228,7 @@ def getCostReductionAdviceGroup() -> AdviceGroup:
         goal=max_sigil_level
     ))
     costReduction_Advices['Uncapped'].append(
-        session_data.account.sneaking_.emporium['Ionized Sigils'].get_advice()
+        session_data.account.sneaking.emporium['Ionized Sigils'].get_advice()
     )
     costReduction_Advices['Uncapped'].append(Advice(
         label=f"{{{{ Artifact|#sailing }}}}: Chilled Yarn increases sigil by {1 + session_data.account.sailing['Artifacts']['Chilled Yarn']['Level']}x",
@@ -287,7 +287,7 @@ def getExaltedAdviceGroup() -> AdviceGroup:
         resource='particles'
     ))
     exalted_advice[boni].append(
-        session_data.account.sneaking_.pristine['Jellypick'].get_obtained_advice()
+        session_data.account.sneaking.pristine['Jellypick'].get_obtained_advice()
     )
     emp_set = session_data.account.armor_sets['Sets']['EMPEROR SET']
     exalted_advice[boni].append(Advice(

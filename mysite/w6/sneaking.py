@@ -1,25 +1,26 @@
-from consts.idleon.lava_func import lava_func
 from consts.progression_tiers import true_max_tiers
 
 from models.advice.advice import Advice
 from models.advice.advice_section import AdviceSection
 from models.advice.advice_group import AdviceGroup
 from models.general.session_data import session_data
+
+from utils.number_formatting import round_and_trim
 from utils.logging import get_logger
 
-
 logger = get_logger(__name__)
+
 
 def getSneakingProgressionTiersAdviceGroups():
     sneaking_AdviceDict = {
         'Gemstones': [],
         'JadeEmporium': [
             emporium.get_advice(False)
-            for emporium in session_data.account.sneaking_.emporium.values()
+            for emporium in session_data.account.sneaking.emporium.values()
         ],
         "PristineCharms": [
             pristine.get_obtained_advice(False)
-            for pristine in session_data.account.sneaking_.pristine.values()
+            for pristine in session_data.account.sneaking.pristine.values()
         ],
     }
     sneaking_AdviceGroups = {}
@@ -29,39 +30,20 @@ def getSneakingProgressionTiersAdviceGroups():
     max_tier = true_max - optional_tiers
     tier_Sneaking = 0
 
+    sneaking = session_data.account.sneaking
     # Assess Gemstones
-    talent_level_multi = lava_func('decayMulti', max(0, session_data.account.sneaking['Highest Current Generational Gemstones']), 3, 300)
+    talent_level, talent_multi = sneaking.gemstone_multi_source
     sneaking_AdviceDict["Gemstones"].append(Advice(
-        label=f"Wind Walker Tab 5: Generational Gemstones: {talent_level_multi:.4f}x"
+        label=f"Wind Walker Tab 5: Generational Gemstones: {round_and_trim(talent_multi, 4)}x"
               f"<br>Highest currently specced talent level shown to the right",
         picture_class='generational-gemstones',
-        progression=session_data.account.sneaking['Highest Current Generational Gemstones'],
+        progression=talent_level,
         goal=max([char.max_talents_over_books for char in session_data.account.all_characters if 'Wind Walker' in char.all_classes], default=100)
     ))
 
-    for gemstoneName, gemstoneData in session_data.account.sneaking['Gemstones'].items():
-        emerald_note = (
-            f" = {1 - (1/(max(1, session_data.account.sneaking['Gemstones']['Emerald']['BoostedValue'])/100)):.4%} cost reduction"
-            if gemstoneName == 'Emerald' else ''
-        )
-        if session_data.account.sneaking['Gemstones']['Moissanite']['BaseValue'] > 0 and gemstoneName != 'Moissanite':
-            boosted_value = (
-                f" (+{gemstoneData['BoostedValue']:,.2f}"
-                f"{'%' if gemstoneName != 'Firefrost' else ''} total"
-                f"{emerald_note})"
-            )
-        else:
-            boosted_value = ''
-        sneaking_AdviceDict["Gemstones"].append(Advice(
-            label=f"Level {gemstoneData['Level']:,} {gemstoneName}:"
-                  f" +{gemstoneData['BaseValue']:,.2f}/{gemstoneData['MaxValue']:,}"
-                  f"{'%' if gemstoneName != 'Firefrost' else ''} {gemstoneData['Stat']}"
-                  f"{boosted_value}",
-            picture_class=gemstoneName,
-            progression=f"{gemstoneData.get('Percent', 0):.2f}",
-            goal=100,  # if session_data.account.sneaking["Gemstones"]['Moissanite']['Level'] == 0 or gemstoneName == 'Moissanite' else 400,
-            unit="%"
-        ))
+    sneaking_AdviceDict["Gemstones"].extend([
+        gemstone.get_bonus_advice() for gemstone in sneaking.gemstone.values()
+    ])
 
     for category in sneaking_AdviceDict:
         for advice in sneaking_AdviceDict[category]:

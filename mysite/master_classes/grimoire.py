@@ -79,7 +79,7 @@ def getGrimoireCurrenciesAdviceGroup(grimoire) -> AdviceGroup:
 
     mga_label = f"Bone Multi Group A: {grimoire['Bone Calc']['mga']:.2f}x"
     currency_advices[mga_label] = [
-        session_data.account.sneaking_.pristine['Glimmerchain'].get_obtained_advice()
+        session_data.account.sneaking.pristine['Glimmerchain'].get_obtained_advice()
     ]
 
     db_index = None

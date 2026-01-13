@@ -406,7 +406,7 @@ def getEvoChanceAdviceGroup(farming, highest_farming_level) -> AdviceGroup:
         goal=1
     ))
     evo_advices[stamp].append(
-        session_data.account.sneaking_.pristine['Liqorice Rolle'].get_obtained_advice()
+        session_data.account.sneaking.pristine['Liqorice Rolle'].get_obtained_advice()
     )
     evo_advices[stamp].append(session_data.account.stamps['Crop Evo Stamp'].get_advice())
 
@@ -714,7 +714,7 @@ def getBeanMultiAdviceGroup(farming) -> AdviceGroup:
     ))
     #Emporium - Deal Sweetening
     bm_advices[mgb].append(
-        session_data.account.sneaking_.emporium['Deal Sweetening'].get_advice()
+        session_data.account.sneaking.emporium['Deal Sweetening'].get_advice()
     )
     #Achievement - Crop Flooding
     bm_advices[mgb].append(Advice(
@@ -813,7 +813,7 @@ def getOGAdviceGroup(farming):
 
     # Pristine Charm
     og_advices[pristine].append(
-        session_data.account.sneaking_.pristine['Taffy Disc'].get_obtained_advice()
+        session_data.account.sneaking.pristine['Taffy Disc'].get_obtained_advice()
     )
 
     for category in og_advices.values():
@@ -1156,7 +1156,7 @@ def getFarmingAdviceSection():
         farming_AdviceGroupDict['Value'] = getCropValueAdviceGroup(farming)
     if farming['Mama Trolls Unlocked']:
         farming_AdviceGroupDict['Bean'] = getBeanMultiAdviceGroup(farming)
-    if session_data.account.sneaking_.emporium['Crop Depot Scientist'].obtained:
+    if session_data.account.sneaking.emporium['Crop Depot Scientist'].obtained:
         farming_AdviceGroupDict['Depot'] = getCropDepotAdviceGroup(farming)
     farming_AdviceGroupDict['Day'] = getDayMarketAdviceGroup(farming)
     farming_AdviceGroupDict['Night'] = getNightMarketAdviceGroup(farming)

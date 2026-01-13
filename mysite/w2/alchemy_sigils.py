@@ -201,12 +201,12 @@ def getSigilsProgressionTiersAdviceGroup():
         subgroup_label = build_subgroup_label(tier_number, max_tier)
         if (
             "Ionized Sigils" in requirements.get("Other", {})
-            and not session_data.account.sneaking_.emporium["Ionized Sigils"].obtained
+            and not session_data.account.sneaking.emporium["Ionized Sigils"].obtained
         ):
             add_subgroup_if_available_slot(sigils_Advices['Sigils'], subgroup_label)
             if subgroup_label in sigils_Advices['Sigils']:
                 sigils_Advices['Sigils'][subgroup_label].append(
-                    session_data.account.sneaking_.emporium['Ionized Sigils'].get_advice()
+                    session_data.account.sneaking.emporium['Ionized Sigils'].get_advice()
                 )
         # Unlock new Sigils
         for requiredSigil, requiredLevel in requirements.get('Unlock', {}).items():

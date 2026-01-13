@@ -187,7 +187,7 @@ def get_drop_rate_account_advice_group() -> tuple[AdviceGroup, dict]:
         ))
     # Pristine Charm- Liqorice Rolle
     # Temporary bonus line, disappears when maxed. Buffed value is included in the DR line below
-    liqorice_rolle = session_data.account.sneaking_.pristine['Liqorice Rolle']
+    liqorice_rolle = session_data.account.sneaking.pristine['Liqorice Rolle']
     if not liqorice_rolle.obtained:
         golden_sixes_buffs.append('Pristine Charm')
         drop_rate_aw_advice[w1].append(liqorice_rolle.get_obtained_advice())
@@ -573,7 +573,7 @@ def get_drop_rate_account_advice_group() -> tuple[AdviceGroup, dict]:
     ))
 
     # Rift - Sneak Mastery 1
-    sneak_mastery_level = session_data.account.sneaking_.unlocked_mastery
+    sneak_mastery_level = session_data.account.sneaking.unlocked_mastery
     sneak_mastery_value = 30 if (sneak_mastery_level > 0) else 0
     drop_rate_aw_advice[special].append(Advice(
         label=f"{{{{ Rift|#rift }}}}- Sneaking Mastery:"
@@ -602,7 +602,7 @@ def get_drop_rate_account_advice_group() -> tuple[AdviceGroup, dict]:
     ))
 
     # Sneaking - Pristine Charm - Cotton Candy
-    cotton_candy = session_data.account.sneaking_.pristine["Cotton Candy"]
+    cotton_candy = session_data.account.sneaking.pristine["Cotton Candy"]
     cotton_candy_multi = cotton_candy.value
     drop_rate_aw_advice[special].append(cotton_candy.get_obtained_advice())
 

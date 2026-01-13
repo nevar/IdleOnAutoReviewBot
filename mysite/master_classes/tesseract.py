@@ -174,7 +174,7 @@ def get_tesseract_currencies_advice_group(tesseract) -> AdviceGroup:
 
     mgc_label = f"Bone Multi Group C: {tesseract['Tachyon Calc']['mgc']:.2f}x"
     currency_advices[mgc_label] = [
-        session_data.account.sneaking_.pristine['Mystery Fizz'].get_obtained_advice()
+        session_data.account.sneaking.pristine['Mystery Fizz'].get_obtained_advice()
     ]
 
     mgd_label = f"Tachyon Multi Group D: {tesseract['Tachyon Calc']['mgd']:.2f}x"
