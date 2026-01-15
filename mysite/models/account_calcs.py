@@ -2289,6 +2289,9 @@ def _calculate_general_character_bonus_talent_levels(account):
             'Progression': account.grimoire['Upgrades']['Skull of Major Talent']['Level'],
             'Goal': account.grimoire['Upgrades']['Skull of Major Talent']['Max Level']
         }
+        # TODO: Gaming: Duper Bits: Timmy Talented: +1 lvl per 100 lvl over 500 (+7)
+        # TODO: legend talent Super Talents (+100) if supered talent
+        # TODO: from zenith that add to super talent (+16)
     }
     account.sum_account_wide_bonus_talents = 0
     for bonusName, bonusValuesDict in account.bonus_talents.items():
@@ -2305,6 +2308,7 @@ def _calculate_general_character_bonus_talent_levels(account):
             arctis_base = 15
             bigp_value = account.alchemy_bubbles['Big P']['BaseValue']
             div_minorlink_value = char.divinity_level / (char.divinity_level + 60)
+            # TODO: multi from coral kid
             final_arctis_result = ceil(arctis_base * bigp_value * div_minorlink_value)
             character_specific_bonuses += final_arctis_result
 
