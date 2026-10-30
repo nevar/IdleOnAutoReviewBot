@@ -66,13 +66,13 @@ def _log(value: float) -> float:
     return log(max(value, 1)) / 2.30259
 
 
-# "SpecialPassives" in `_customBlock_Breeding`. Last updated in v2.531.0
-def _shiny_level(progress: float) -> int:
+# "SpecialPassives" in `_customBlock_Breeding`. Last updated in v2.550.0
+def _shiny_level(progress: float, max_level: int) -> int:
     return max(
         [1]
         + [
             tier + 2
-            for tier in range(19)
+            for tier in range(max_level - 1)
             if progress > floor((1 + (tier + 1) ** 1.6) * 1.7 ** (tier + 1))
         ]
     )
@@ -305,6 +305,9 @@ def _get_quantities(
     holes = get("Holes", [])
     research = get("Research", [])
     breeding = get("Breeding", [])
+    # "SpecialPassives" in `_customBlock_Breeding`: Menagerie Unlock 11 gives +10 Max
+    # Shiny LV. Last updated in v2.550.0
+    max_shiny_level = 20 + 10 * (_num(_dig(get("Menagerie", []), 2, 11)) >= 1)
     sailing = get("Sailing", [])
     gaming = get("Gaming", [])
     sprouts = get("GamingSprout", [])
@@ -408,7 +411,7 @@ def _get_quantities(
     ]
     star_shiny = sum(
         _js_round(
-            _shiny_level(_num(_dig(breeding, world + 22, index)))
+            _shiny_level(_num(_dig(breeding, world + 22, index)), max_shiny_level)
             * tome_star_shiny_per_level
         )
         for world, index in tome_star_shiny_pets
@@ -514,7 +517,9 @@ def _get_quantities(
     breedability_levels = 0
     breedability_unlocked = _num(_dig(breeding, 2, 3)) > 0
     for world, index in tome_breeding_species:
-        shiny_levels += _shiny_level(_num(_dig(breeding, world + 22, index)))
+        shiny_levels += _shiny_level(
+            _num(_dig(breeding, world + 22, index)), max_shiny_level
+        )
         breedability_multi = (
             1 + log(max(1, (_num(_dig(breeding, world + 13, index)) + 1) ** 0.725))
             if breedability_unlocked
